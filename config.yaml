@@ -1,0 +1,87 @@
+augmentations:
+  Jitter:
+    description: "Adds Gaussian noise scaled by signal amplitude."
+    params:
+      sigma: { type: "float", default: 0.1, min: 0.0, max: 5.0, label: "Noise Sigma" }
+      amplitude: { type: "float", default: 0.5, min: 0.0, max: 10.0, label: "Amplitude Scale" }
+      prob: { type: "float", default: 1.0, hidden: true }
+
+  RandomChangeAmplitude:
+    description: "Randomly scales the signal amplitude."
+    params:
+      amplitude_range: { type: "float", default: 0.5, min: 0.0, max: 2.0, label: "Range" }
+      prob: { type: "float", default: 1.0, hidden: true }
+
+  RandomShiftBaselineWander:
+    description: "Adds and shifts low-frequency baseline wander."
+    params:
+      cutoff_freq: { type: "float", default: 0.5, min: 0.01, max: 5.0, label: "Cutoff Freq (Hz)" }
+      # signal_fs is handled automatically in app.py
+
+  RandomDropLeads:
+    description: "Sets random leads to zero."
+    params:
+      probability: { type: "float", default: 0.3, min: 0.0, max: 1.0, label: "Drop Probability" }
+      keep_lead_II: { type: "bool", default: true, hidden: true }
+
+  RandomCrop:
+    description: "Crops the signal to a specific fraction."
+    params:
+      crop_size: { type: "float", default: 0.8, min: 0.1, max: 0.99, label: "Crop Fraction" }
+      # max_length is handled automatically in app.py
+
+  RandomResample:
+    description: "Resamples signal to simulate heart rate variability."
+    params:
+      max_freq_delta_ratio: { type: "float", default: 0.05, min: 0.0, max: 0.2, label: "Max Delta Ratio" }
+      # current_freq is handled automatically in app.py
+
+  Masking:
+    description: "Zeros out patches of the signal."
+    params:
+      factor: { type: "float", default: 0.2, min: 0.1, max: 0.9, label: "Mask Factor" }
+      patch_size_sec: { type: "float", default: 0.5, min: 0.1, max: 2.0, label: "Patch Size (s)" }
+      prob: { type: "float", default: 1.0, hidden: true }
+      # fs is handled automatically in app.py
+
+  Rescaling:
+    description: "Scales the signal by a random normal distribution."
+    params:
+      sigma: { type: "float", default: 0.5, min: 0.1, max: 5.0, label: "Sigma" }
+
+  HighpassFilter:
+    description: "Butterworth Highpass Filter."
+    params:
+      cutoff: { type: "float", default: 0.5, min: 0.1, max: 5.0, label: "Cutoff (Hz)" }
+      # fs is handled automatically in app.py
+
+  LowpassFilter:
+    description: "Butterworth Lowpass Filter."
+    params:
+      cutoff: { type: "float", default: 40.0, min: 10.0, max: 300.0, label: "Cutoff (Hz)" }
+      # fs is handled automatically in app.py
+
+  TimeFlip:
+    description: "Flips the signal along the time axis."
+    params:
+      prob: { type: "float", default: 1.0, hidden: true }
+
+  SignFlip:
+    description: "Inverts the signal polarity."
+    params:
+      prob: { type: "float", default: 1.0, hidden: true }
+
+  FTSurrogate:
+    description: "Fourier Transform Surrogate (Phase Noise)."
+    params:
+      phase_noise_magnitude: { type: "float", default: 0.5, min: 0.0, max: 1.0, label: "Phase Magnitude" }
+      prob: { type: "float", default: 1.0, hidden: true }
+
+  Standardize:
+    description: "Z-score standardization."
+    params:
+      axis: { type: "int", default: 0, hidden: true }
+
+  Normalize:
+    description: "Min-Max / Std Normalization."
+    params: {}
